@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CategoryService } from 'src/app/modules/shared/services/category.service';
 
 @Component({
@@ -13,7 +13,8 @@ export class NewCategoryComponent implements OnInit {
   public categoryForm!: FormGroup;
   private fb = inject(FormBuilder);
   private categoryService = inject(CategoryService);
-  private dialogRef = inject(MatDialogRef)
+  private dialogRef = inject(MatDialogRef);
+  public data = inject(MAT_DIALOG_DATA);
 
   constructor() {
     this.categoryForm = this.fb.group({
@@ -24,7 +25,10 @@ export class NewCategoryComponent implements OnInit {
 
 
   ngOnInit(): void {
-
+    console.log("Esta es la data updata", this.data)
+    if (this.data != null) {
+      this.updateForm(this.data);
+    }
   }
 
   onSave() {
@@ -43,6 +47,13 @@ export class NewCategoryComponent implements OnInit {
 
   onCancel() {
     this.dialogRef.close(3);
+  }
+
+  updateForm(data: any){
+    this.categoryForm = this.fb.group({
+      name: [data.name, Validators.required],
+      description: [data.description, Validators.required]
+    });
   }
 
 }
