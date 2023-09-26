@@ -11,7 +11,7 @@ export class SidenavComponent {
   mobileQuery: MediaQueryList;
   menuNav = [
     {name: 'Home', route: 'home', icon:'home'},
-    {name: 'Categorias', route: 'categorias', icon:'category'},
+    {name: 'Categorias', route: 'category', icon:'category'},
     {name: 'Productos', route: 'product', icon:'production_quantity_limits'}
   ]
 
