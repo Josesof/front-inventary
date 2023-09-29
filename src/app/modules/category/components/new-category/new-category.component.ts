@@ -11,23 +11,24 @@ import { CategoryService } from 'src/app/modules/shared/services/category.servic
 export class NewCategoryComponent implements OnInit {
 
   public categoryForm!: FormGroup;
+  estadoFormulario: string = "";
   private fb = inject(FormBuilder);
   private categoryService = inject(CategoryService);
   private dialogRef = inject(MatDialogRef);
   public data = inject(MAT_DIALOG_DATA);
 
-  constructor() {
+  
+
+  ngOnInit(): void {
+    this.estadoFormulario = "Agregar";
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required]
     });
-  }
-
-
-  ngOnInit(): void {
-    console.log("Esta es la data updata", this.data)
+    
     if (this.data != null) {
       this.updateForm(this.data);
+      this.estadoFormulario = "Actualizar";
     }
   }
 
@@ -36,13 +37,23 @@ export class NewCategoryComponent implements OnInit {
       name: this.categoryForm.get('name')?.value,
       description: this.categoryForm.get('description')?.value
     }
-
-    this.categoryService.saveCategorie(data)
+    if(this.data != null){
+          this.categoryService.updateCateorie(data, this.data.id)
+          .subscribe((dta:any) =>{
+               this.dialogRef.close(1);
+          }, (error:any) => {
+            this.dialogRef.close(2);
+          });
+    } else {
+      this.categoryService.saveCategorie(data)
       .subscribe((data: any) => {
         this.dialogRef.close(1)
       }, (error: any) => {
         this.dialogRef.close(2);
       })
+    }
+
+   
   }
 
   onCancel() {
