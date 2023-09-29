@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit, inject } from '@angular/core';
+import { Component, Injectable, OnInit, ViewChild, inject } from '@angular/core';
 import { CategoryService } from '../../shared/services/category.service';
 import { createInjectableType } from '@angular/compiler';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewCategoryComponent } from './new-category/new-category.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { ConfirmComponent } from '../../shared/components/confirm/confirm.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-category',
@@ -27,8 +28,11 @@ export class CategoryComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
   dataSource = new MatTableDataSource<CategoryElement>
+  
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
 
-  getCategories(): void {
+  getCategories() {
     this.categoryService.getCategoris().subscribe((data: any) => {
       console.log("request categories : ", data);
       this.processCategoriesResponse(data);
@@ -47,6 +51,7 @@ export class CategoryComponent implements OnInit {
       });
 
       this.dataSource = new MatTableDataSource<CategoryElement>(dataCategory);
+      this.dataSource.paginator = this.paginator;
     }
   }
 
@@ -72,11 +77,11 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  edit(id:number, name:string, description:string){
-  
+  edit(id: number, name: string, description: string) {
+
     const dialogRef = this.dialog.open(NewCategoryComponent, {
       width: '450px',
-      data:{id: id, name: name, description: description}
+      data: { id: id, name: name, description: description }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -91,11 +96,11 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  delete(id:number){
-  
-    const dialogRef = this.dialog.open( ConfirmComponent,{
+  delete(id: number) {
+
+    const dialogRef = this.dialog.open(ConfirmComponent, {
       width: '450px',
-      data:{id: id}
+      data: { id: id }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -109,7 +114,19 @@ export class CategoryComponent implements OnInit {
 
     });
   }
-  
+
+  buscar(termino: string) {
+
+    if (termino.length === 0) {
+      return this.getCategories();
+    }
+
+    this.categoryService.getCateorieById(termino)
+    .subscribe((resp: any) =>{
+      this.processCategoriesResponse(resp);
+    })
+  }
+
   openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
     return this.snackBar.open(message, action, {
       duration: 3000
