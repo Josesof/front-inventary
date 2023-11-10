@@ -47,7 +47,6 @@ export class CategoryComponent implements OnInit {
       let listCategory = resp.categoryResponse.category;
       listCategory.forEach((element: CategoryElement) => {
         dataCategory.push(element);
-        console.log("This is data :", element);
       });
 
       this.dataSource = new MatTableDataSource<CategoryElement>(dataCategory);
@@ -100,7 +99,7 @@ export class CategoryComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ConfirmComponent, {
       width: '450px',
-      data: { id: id }
+      data: { id: id, module: "category" }
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
@@ -117,13 +116,15 @@ export class CategoryComponent implements OnInit {
 
   buscar(termino: string) {
 
+    console.log('this is termino', termino)
+
     if (termino.length === 0) {
       return this.getCategories();
     }
-
-    this.categoryService.getCateorieById(termino)
-    .subscribe((resp: any) =>{
-      this.processCategoriesResponse(resp);
+    this.categoryService.getCateorieByName(termino).subscribe((data: any) =>{
+      
+      this.processCategoriesResponse(data);
+      console.log('this is resp', data)
     })
   }
 
