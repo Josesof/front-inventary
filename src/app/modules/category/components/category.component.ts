@@ -7,6 +7,7 @@ import { NewCategoryComponent } from './new-category/new-category.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { ConfirmComponent } from '../../shared/components/confirm/confirm.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { UtilService } from '../../shared/services/util.service';
 
 @Component({
   selector: 'app-category',
@@ -16,14 +17,17 @@ import { MatPaginator } from '@angular/material/paginator';
 export class CategoryComponent implements OnInit {
 
 
-  private categoryService = inject(CategoryService);
+  private categoryService = inject(CategoryService);  
+  private utilService = inject(UtilService);
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog);
+  isAdmin: any;
 
 
 
   ngOnInit(): void {
     this.getCategories();
+    this.isAdmin = this.utilService.isAdmin()
   }
 
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
@@ -121,10 +125,8 @@ export class CategoryComponent implements OnInit {
     if (termino.length === 0) {
       return this.getCategories();
     }
-    this.categoryService.getCateorieByName(termino).subscribe((data: any) =>{
-      
+    this.categoryService.getCateorieByName(termino).subscribe((data: any) =>{      
       this.processCategoriesResponse(data);
-      console.log('this is resp', data)
     })
   }
 
