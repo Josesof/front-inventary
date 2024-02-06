@@ -1,3 +1,11 @@
+table {
+    width: 100%;
+}
+
+ul {
+    display: flex;
+}
+
 ul li {
     list-style: none;
 }
@@ -16,6 +24,6 @@ mat-form-field {
 }
 
 .mat-cell:nth-chield(1),
-.mat-header-cell:nth-child(1){
+.mat-header-cell:nth-child(1) {
     flex: 0 0 6%;
 }

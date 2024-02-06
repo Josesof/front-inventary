@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { NgChartsModule } from 'ng2-charts';
 
 
 
@@ -17,6 +18,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
     keycloak.init({
       config: {
         url: 'http://localhost:8082/',
+      // url: 'http://34.121.96.29:80/',
         realm: 'inventory',
         clientId: 'angular-client'
       },
@@ -40,7 +42,8 @@ function initializeKeycloak(keycloak: KeycloakService) {
     AppRoutingModule,
     DashboardModule,
     BrowserAnimationsModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
+    NgChartsModule
   ],
   providers: [
     {
