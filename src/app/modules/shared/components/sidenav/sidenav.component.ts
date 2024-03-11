@@ -1,5 +1,4 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { KeycloakService } from 'keycloak-angular';
 import { Component, Injectable, OnInit, ViewChild, inject } from '@angular/core';
 
 @Component({
@@ -14,23 +13,22 @@ export class SidenavComponent {
   menuNav = [
     {name: 'Home', route: 'home', icon:'home'},
     {name: 'Categorias', route: 'category', icon:'category'},
-    {name: 'Productos', route: 'product', icon:'production_quantity_limits'}
+    {name: 'Productos', route: 'product', icon:'production_quantity_limits'},
+    {name: 'Compras', route: 'carrito', icon:'category'},
   ]
 
   constructor(media: MediaMatcher) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
   }
 
-  private keycloakService = inject(KeycloakService);
+
 
   shouldRun = true;
 
   ngOnInit(): void {
-    this.userName = this.keycloakService.getUsername();
   }
 
   logout() {
-    this.keycloakService.logout();
   }
 
 

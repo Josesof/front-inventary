@@ -9,8 +9,8 @@
 }
 
 .chartContainer {
-    height: 90%;
-    width: 90%;
+    height: 20rem;
+    width: 50rem;
     display: flex;
     flex-direction: column;
     align-items: center;

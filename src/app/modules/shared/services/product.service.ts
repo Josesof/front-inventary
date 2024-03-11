@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-//const base_url = "http://localhost:8080/api/v1";
-const base_url = "https://springboot-app-405905.rj.r.appspot.com/api/v1";
+const base_url = "http://localhost:8080/api/v1";
+//const base_url = "https://springboot-app-405905.rj.r.appspot.com/api/v1";
 @Injectable({
   providedIn: 'root'
 })

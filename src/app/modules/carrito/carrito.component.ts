@@ -1,19 +1,19 @@
 import { Component, Injectable, OnInit, ViewChild, inject } from '@angular/core';
-import { ProductService } from '../../shared/services/product.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { NewProductComponent } from './new-product/new-product.component';
-import { ConfirmComponent } from '../../shared/components/confirm/confirm.component';
-import { Product } from '../../interfaces/product';
+import { Product } from '../interfaces/product';
+import { NewProductComponent } from '../product/product/new-product/new-product.component';
+import { ConfirmComponent } from '../shared/components/confirm/confirm.component';
+import { ProductService } from '../shared/services/product.service';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css']
+  selector: 'app-carrito',
+  templateUrl: './carrito.component.html',
+  styleUrls: ['./carrito.component.css']
 })
-export class ProductComponent implements OnInit {
+export class CarritoComponent {
 
   listProducts: Product[] = [];
 
@@ -27,8 +27,7 @@ export class ProductComponent implements OnInit {
     this.getProducts();
   }
 
-  displayedColumns: string[] = ['id', 'name', 'price', 'account', 'category', 'picture', 'actions'];
-  dataSource = new MatTableDataSource<ProductElement>
+
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
@@ -43,21 +42,17 @@ export class ProductComponent implements OnInit {
   }
 
   processCategoriesResponse(resp: any) {
-    const dataProduct: ProductElement[] = [];
     if (resp.metadata[0].code == "00") {
       let listCProduct = resp.product.products;
 
       listCProduct.forEach((element: ProductElement) => {
         //element.category = element.category.name;
         element.picture = element.picture ? 'data:image/jpeg;base64,' + element.picture : '';
-        dataProduct.push(element);
+        
       });
 
-      this.listProducts = dataProduct;
+      this.listProducts = listCProduct;
 
-      //set the datasource
-      this.dataSource = new MatTableDataSource<ProductElement>(dataProduct);
-      this.dataSource.paginator = this.paginator;
     }
   }
 
@@ -85,26 +80,6 @@ export class ProductComponent implements OnInit {
   }
 
 
-  edit(id: number, name: string, price: number, account: number, category: any) {
-
-    const dialogRef = this.dialog.open(NewProductComponent, {
-      width: '450px',
-      data: { id: id, name: name, price: price, account: account, category: category }
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-
-      if (result == 1) {
-        this.openSnackBar("Producto Actualizada", "Exitosa");
-        this.getProducts();
-      } else if (result == 2) {
-        this.openSnackBar("Se produjo un error al actualizar la producto", "Error");
-      }
-
-    });
-  }
-
-
   buscar(termino: string) {
 
     console.log('this is termino', termino)
@@ -119,25 +94,7 @@ export class ProductComponent implements OnInit {
     })
   }
   
- delete(id: number) {
- 
-   const dialogRef = this.dialog.open(ConfirmComponent, {
-     width: '450px',
-     data: { id: id, module: "product" }
-   });
- 
-   dialogRef.afterClosed().subscribe((result: any) => {
- 
-     if (result == 1) {
-       this.openSnackBar("Product Eliminado", "Exitoso");
-       this.getProducts();
-     } else if (result == 2) {
-       this.openSnackBar("Se produjo un error al eliminar la Product", "Error");
-     }
- 
-   });
- }
- 
+
 
  
 
